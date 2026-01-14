@@ -37,7 +37,7 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 20% 90%;
+    --border: 215 20% 96%;
     --input: 215 20% 90%;
     --ring: 215 85% 45%;
 
@@ -118,9 +118,13 @@ All colors MUST be HSL.
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  /* Use border color only where needed; avoid applying border color globally */
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
+
+  /* Borders are no longer globally stripped. Use the `has-border` class for opt-in borders when needed,
+     but preferred approach is to rely on subtle color tokens and shadows for separation. */
   
   html {
     font-family: "Open Sans", system-ui, sans-serif;
@@ -169,5 +173,11 @@ All colors MUST be HSL.
 
   .transition-smooth {
     transition: var(--transition-smooth);
+  }
+
+  /* Override Tailwind's .px-4 utility to set horizontal padding to zero as requested */
+  .px-4 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
