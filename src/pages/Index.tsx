@@ -46,6 +46,19 @@ const Index = () => {
 
       {/* Hero Section */}
       <section id="inicio" className="pt-24 pb-20 gradient-hero">
+        <div className="w-full mb-8">
+          <video
+            src="/video.mp4"
+            className="w-full rounded-none shadow-lg"
+            controls
+            playsInline
+            muted
+            loop
+            autoPlay
+          >
+            Tu navegador no soporta la reproducción de video.
+          </video>
+        </div>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 order-2 lg:order-1">
