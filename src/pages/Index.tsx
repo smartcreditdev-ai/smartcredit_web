@@ -46,19 +46,6 @@ const Index = () => {
 
       {/* Hero Section */}
       <section id="inicio" className="pt-24 pb-20 gradient-hero">
-        <div className="w-full mb-8">
-          <video
-            src="/video.mp4"
-            className="w-full rounded-none shadow-lg"
-            controls
-            playsInline
-            muted
-            loop
-            autoPlay
-          >
-            Tu navegador no soporta la reproducción de video.
-          </video>
-        </div>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 order-2 lg:order-1">
@@ -77,12 +64,18 @@ const Index = () => {
                 </Button>
               </div>
             </div>
-            <div className="relative order-1 lg:order-2">
-              <img 
-                src={heroImage} 
-                alt="SmartCredit Dashboard - Gestión de créditos moderna" 
-                className="rounded-2xl shadow-lg"
-              />
+            <div className="relative order-1 lg:order-2 w-full">
+              <video
+                src="/video.mp4"
+                className="w-full rounded-2xl shadow-lg"
+                controls
+                playsInline
+                muted
+                loop
+                autoPlay
+              >
+                Tu navegador no soporta la reproducción de video.
+              </video>
             </div>
           </div>
         </div>
@@ -102,15 +95,17 @@ const Index = () => {
 
       {/* Contact Section */}
       <section id="contacto" className="py-20 bg-card">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-foreground mb-4">Solicita una Demo</h2>
-            <p className="text-xl text-muted-foreground">
-              Descubre cómo SmartCredit puede transformar tu gestión de créditos
-            </p>
-          </div>
-          <Card className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="mb-8">
+                <h2 className="text-foreground mb-4">Solicita una Demo</h2>
+                <p className="text-xl text-muted-foreground">
+                  Descubre cómo SmartCredit puede transformar tu gestión de créditos
+                </p>
+              </div>
+              <Card className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="nombre" className="block text-sm font-medium text-foreground mb-2">
@@ -169,6 +164,15 @@ const Index = () => {
               </Button>
             </form>
           </Card>
+            </div>
+            <div className="flex justify-center lg:justify-end">
+              <img
+                src={heroImage}
+                alt="SmartCredit Dashboard - Gestión de créditos moderna"
+                className="rounded-2xl shadow-lg max-w-md w-full object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
