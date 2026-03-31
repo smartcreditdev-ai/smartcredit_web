@@ -8,6 +8,7 @@ import TechnologySection from "@/components/TechnologySection";
 import FeaturesSection from "@/components/FeaturesSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import AISection from "@/components/AISection";
+import SmartRoutesSection from "@/components/SmartRoutesSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import heroImage from "@/assets/hero-back.png";
 import { useState } from "react";
@@ -86,6 +87,9 @@ const Index = () => {
 
       {/* AI Section */}
       <AISection />
+
+      {/* Rutas inteligentes en campo */}
+      <SmartRoutesSection />
 
       {/* Technology Section */}
       <TechnologySection />

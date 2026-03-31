@@ -31,6 +31,9 @@ const Header = () => {
             <button onClick={() => scrollToSection("caracteristicas")} className="text-foreground hover:text-primary transition-smooth">
               Características
             </button>
+            <button onClick={() => scrollToSection("rutas-inteligentes")} className="text-foreground hover:text-primary transition-smooth">
+              Rutas
+            </button>
             <button onClick={() => scrollToSection("tecnologia")} className="text-foreground hover:text-primary transition-smooth">
               Tecnología
             </button>
@@ -66,6 +69,9 @@ const Header = () => {
             </button>
             <button onClick={() => scrollToSection("caracteristicas")} className="text-foreground hover:text-primary transition-smooth text-left">
               Características
+            </button>
+            <button onClick={() => scrollToSection("rutas-inteligentes")} className="text-foreground hover:text-primary transition-smooth text-left">
+              Rutas
             </button>
             <button onClick={() => scrollToSection("tecnologia")} className="text-foreground hover:text-primary transition-smooth text-left">
               Tecnología

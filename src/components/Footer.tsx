@@ -26,6 +26,11 @@ const Footer = () => {
                 </a>
               </li>
               <li>
+                <a href="#rutas-inteligentes" className="text-muted-foreground hover:text-primary transition-smooth">
+                  Rutas inteligentes
+                </a>
+              </li>
+              <li>
                 <a href="#tecnologia" className="text-muted-foreground hover:text-primary transition-smooth">
                   Tecnología
                 </a>
