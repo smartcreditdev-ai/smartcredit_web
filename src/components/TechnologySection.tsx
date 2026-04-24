@@ -119,11 +119,21 @@ const TechnologySection = () => {
               <p className="text-sm text-muted-foreground">Disponible en las principales plataformas móviles.</p>
             </motion.div>
 
-            <motion.div className="flex flex-col items-center p-6 bg-card/50 border border-border rounded-lg" whileHover={{ scale: 1.03 }}>
-              <img src={appleStoreLogo} alt="Apple App Store" className="w-20 h-20 object-contain mb-3" />
-              <h4 className="text-lg font-semibold">Apple App Store</h4>
-              <p className="text-sm text-muted-foreground">Descarga desde el Apple App Store.</p>
-            </motion.div>
+            <a
+              href="https://apps.apple.com/us/app/smartcredit/id6759115970"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full"
+            >
+              <motion.div
+                className="flex flex-col items-center p-6 bg-card/50 border border-border rounded-lg cursor-pointer"
+                whileHover={{ scale: 1.03 }}
+              >
+                <img src={appleStoreLogo} alt="Apple App Store" className="w-20 h-20 object-contain mb-3" />
+                <h4 className="text-lg font-semibold">Apple App Store</h4>
+                <p className="text-sm text-muted-foreground">Descarga desde el Apple App Store.</p>
+              </motion.div>
+            </a>
           </div>
         </motion.div>
 
