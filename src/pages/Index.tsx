@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import TechnologySection from "@/components/TechnologySection";
 import FeaturesSection from "@/components/FeaturesSection";
 import BenefitsSection from "@/components/BenefitsSection";
+import InstitutionsSection from "@/components/InstitutionsSection";
 import AISection from "@/components/AISection";
 import SmartRoutesSection from "@/components/SmartRoutesSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -96,6 +97,9 @@ const Index = () => {
 
       {/* Benefits Section */}
       <BenefitsSection />
+
+      {/* Institutions Section */}
+      <InstitutionsSection />
 
       {/* Contact Section */}
       <section id="contacto" className="py-20 bg-card">
