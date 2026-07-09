@@ -13,7 +13,7 @@ const InstitutionsSection = () => {
     { name: "FAMA", logo: famaLogo },
     { name: "Finacredit", logo: finacreditLogo },
     { name: "Puente de Amistad", logo: puenteDeAmistadLogo },
-    { name: "Yamnonh", logo: yamnonhLogo },
+    { name: "Yamanonh", logo: yamnonhLogo },
   ];
 
   return (
@@ -39,7 +39,7 @@ const InstitutionsSection = () => {
           {institutions.map((institution, index) => (
             <motion.div
               key={institution.name}
-              className="flex flex-col items-center p-5 bg-card/50 border border-border rounded-lg"
+              className="flex flex-col items-center p-5 bg-white border border-border rounded-lg shadow-md"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.1 }}
