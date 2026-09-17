@@ -282,7 +282,12 @@ const hydrateCardItems = (items: RoadmapContentCardItem[], colors: string[]): Ro
   }));
 
 export const hydrateRoadmapContent = (doc: RoadmapContentDocument): RoadmapContent => ({
-  hero: { ...doc.hero },
+  hero: {
+    badge: doc.hero.badge,
+    title: doc.hero.title,
+    description: doc.hero.description,
+    ctaLabel: doc.hero.ctaLabel,
+  },
   stage1: {
     title: doc.stage1.title,
     status: doc.stage1.status,
@@ -317,7 +322,15 @@ export const hydrateRoadmapContent = (doc: RoadmapContentDocument): RoadmapConte
     title: doc.commitments.title,
     items: hydrateCardItems(doc.commitments.items, COMMITMENT_COLORS),
   },
-  finalCta: { ...doc.finalCta },
+  finalCta: {
+    title: doc.finalCta.title,
+    description: doc.finalCta.description,
+    buttons: {
+      primary: doc.finalCta.buttons.primary,
+      secondary: doc.finalCta.buttons.secondary,
+      tertiary: doc.finalCta.buttons.tertiary,
+    },
+  },
 });
 
 // ---------------------------------------------------------------------------
