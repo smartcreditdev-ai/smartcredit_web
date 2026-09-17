@@ -1,17 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSectionNavigation } from "@/hooks/use-section-navigation";
 import logo from "@/assets/logo.png";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { goToSection, goToRoadmap } = useSectionNavigation();
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setMobileMenuOpen(false);
-    }
+  const handleSectionClick = (id: string) => {
+    goToSection(id);
+    setMobileMenuOpen(false);
+  };
+
+  const handleRoadmapClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const isModifiedClick = event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+    if (isModifiedClick) return;
+
+    event.preventDefault();
+    goToRoadmap();
   };
 
   return (
@@ -25,29 +33,32 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <button onClick={() => scrollToSection("inicio")} className="text-foreground hover:text-primary transition-smooth">
+            <button onClick={() => handleSectionClick("inicio")} className="text-foreground hover:text-primary transition-smooth">
               Inicio
             </button>
-            <button onClick={() => scrollToSection("caracteristicas")} className="text-foreground hover:text-primary transition-smooth">
+            <button onClick={() => handleSectionClick("caracteristicas")} className="text-foreground hover:text-primary transition-smooth">
               Características
             </button>
-            <button onClick={() => scrollToSection("rutas-inteligentes")} className="text-foreground hover:text-primary transition-smooth">
+            <button onClick={() => handleSectionClick("rutas-inteligentes")} className="text-foreground hover:text-primary transition-smooth">
               Rutas
             </button>
-            <button onClick={() => scrollToSection("tecnologia")} className="text-foreground hover:text-primary transition-smooth">
+            <button onClick={() => handleSectionClick("tecnologia")} className="text-foreground hover:text-primary transition-smooth">
               Tecnología
             </button>
-            <button onClick={() => scrollToSection("beneficios")} className="text-foreground hover:text-primary transition-smooth">
+            <button onClick={() => handleSectionClick("beneficios")} className="text-foreground hover:text-primary transition-smooth">
               Beneficios
             </button>
-            <button onClick={() => scrollToSection("contacto")} className="text-foreground hover:text-primary transition-smooth">
+            <Link to="/roadmap" onClick={handleRoadmapClick} className="text-foreground hover:text-primary transition-smooth">
+              SM Roadmap
+            </Link>
+            <button onClick={() => handleSectionClick("contacto")} className="text-foreground hover:text-primary transition-smooth">
               Contacto
             </button>
           </nav>
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="cta" size="lg" onClick={() => scrollToSection("contacto")}>
+            <Button variant="cta" size="lg" onClick={() => handleSectionClick("contacto")}>
               Solicitar Demo
             </Button>
             <Button variant="outline" size="lg" onClick={() => window.open("https://app.smartcreditla.com/login", "_blank")} className="shadow-lg hover:shadow-glow">
@@ -64,25 +75,35 @@ const Header = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 flex flex-col gap-4">
-            <button onClick={() => scrollToSection("inicio")} className="text-foreground hover:text-primary transition-smooth text-left">
+            <button onClick={() => handleSectionClick("inicio")} className="text-foreground hover:text-primary transition-smooth text-left">
               Inicio
             </button>
-            <button onClick={() => scrollToSection("caracteristicas")} className="text-foreground hover:text-primary transition-smooth text-left">
+            <button onClick={() => handleSectionClick("caracteristicas")} className="text-foreground hover:text-primary transition-smooth text-left">
               Características
             </button>
-            <button onClick={() => scrollToSection("rutas-inteligentes")} className="text-foreground hover:text-primary transition-smooth text-left">
+            <button onClick={() => handleSectionClick("rutas-inteligentes")} className="text-foreground hover:text-primary transition-smooth text-left">
               Rutas
             </button>
-            <button onClick={() => scrollToSection("tecnologia")} className="text-foreground hover:text-primary transition-smooth text-left">
+            <button onClick={() => handleSectionClick("tecnologia")} className="text-foreground hover:text-primary transition-smooth text-left">
               Tecnología
             </button>
-            <button onClick={() => scrollToSection("beneficios")} className="text-foreground hover:text-primary transition-smooth text-left">
+            <button onClick={() => handleSectionClick("beneficios")} className="text-foreground hover:text-primary transition-smooth text-left">
               Beneficios
             </button>
-            <button onClick={() => scrollToSection("contacto")} className="text-foreground hover:text-primary transition-smooth text-left">
+            <Link
+              to="/roadmap"
+              onClick={(e) => {
+                handleRoadmapClick(e);
+                setMobileMenuOpen(false);
+              }}
+              className="text-foreground hover:text-primary transition-smooth text-left"
+            >
+              SM Roadmap
+            </Link>
+            <button onClick={() => handleSectionClick("contacto")} className="text-foreground hover:text-primary transition-smooth text-left">
               Contacto
             </button>
-            <Button variant="cta" size="lg" onClick={() => scrollToSection("contacto")} className="w-full">
+            <Button variant="cta" size="lg" onClick={() => handleSectionClick("contacto")} className="w-full">
               Solicitar Demo
             </Button>
             <Button variant="outline" size="lg" onClick={() => window.open("https://app.smartcreditla.com/login", "_blank")} className="w-full shadow-lg hover:shadow-glow">
