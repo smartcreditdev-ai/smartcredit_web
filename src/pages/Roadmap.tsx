@@ -9,12 +9,24 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import RoadmapStageSection from "@/components/roadmap/RoadmapStageSection";
 import ContinuousEvolution from "@/components/roadmap/ContinuousEvolution";
 import { stage1, stage2, horizonsSection, commitmentsSection } from "@/data/roadmap";
+import { useSeo } from "@/hooks/use-seo";
 
 const scrollToId = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 };
 
 const Roadmap = () => {
+  useSeo({
+    title: "SM Roadmap | SmartCredit",
+    description:
+      "Conoce el roadmap de SmartCredit: funcionalidades disponibles en producción, desarrollo activo 2026 y horizontes de evolución 2027–2030.",
+    canonical: "https://www.smartcreditla.com/roadmap",
+    ogTitle: "SM Roadmap | SmartCredit",
+    ogDescription:
+      "Descubre qué funcionalidades de SmartCredit están disponibles, qué está en desarrollo y cuáles son los próximos horizontes de evolución.",
+    ogUrl: "https://www.smartcreditla.com/roadmap",
+  });
+
   const heroRef = useRef<HTMLElement>(null);
   const isHeroInView = useInView(heroRef, { once: true, amount: 0.1 });
 
@@ -32,7 +44,7 @@ const Roadmap = () => {
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <Badge className="bg-primary/10 text-primary border-primary/20">SM Roadmap · 2026–2030</Badge>
+            <Badge className="bg-primary/10 text-primary border-primary/20 select-none">SM Roadmap · 2026–2030</Badge>
             <h1 className="text-foreground">Construimos el futuro del crédito, etapa por etapa</h1>
             <p className="text-xl text-muted-foreground">
               Este roadmap muestra las capacidades ya disponibles en producción, en qué estamos trabajando
