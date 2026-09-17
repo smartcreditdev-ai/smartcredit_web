@@ -23,23 +23,11 @@ import {
 import { z } from "zod";
 import rawFallbackContent from "./roadmap-content.json";
 
-/**
- * Capa de datos del Roadmap.
- *
- * FUENTE TEXTUAL DE VERDAD: src/data/roadmap-content.json
- * Este archivo NO duplica el contenido: sólo define tipos, el schema Zod,
- * el resolver de íconos (whitelist) y la hidratación de JSON validado hacia
- * los objetos que consumen Roadmap.tsx / RoadmapStageSection / ContinuousEvolution.
- *
- * Colores y gradientes de cada ítem viven acá, en código, NUNCA en el JSON
- * (ver STAGE1_COLORS etc. más abajo) — así el contenido remoto nunca puede
- * alterar el diseño visual, sólo el texto.
- */
+// Fuente: src/data/roadmap-content.json
+// Colores/gradientes viven en código (STAGE1_COLORS, etc.), nunca en JSON.
+// Whitelist de íconos: el JSON sólo puede referenciar por string clave.
 
-// ---------------------------------------------------------------------------
-// Whitelist de íconos: el JSON sólo puede referenciar íconos por clave string.
-// Nunca se importa/ejecuta código a partir de texto remoto.
-// ---------------------------------------------------------------------------
+// Whitelist de íconos
 
 const ICON_MAP: Record<string, LucideIcon> = {
   users: Users,
@@ -67,11 +55,7 @@ const FALLBACK_ICON: LucideIcon = Circle;
 
 const resolveIcon = (key: string): LucideIcon => ICON_MAP[key] ?? FALLBACK_ICON;
 
-// ---------------------------------------------------------------------------
-// Schema Zod — el contenido remoto sólo se usa si pasa esta validación.
-// Todo se renderiza como texto React normal: nunca HTML, nunca dangerouslySetInnerHTML.
-// ---------------------------------------------------------------------------
-
+// Schema Zod — valida remoto, texto-only rendering
 const textField = (max: number) => z.string().trim().min(1).max(max);
 
 /** Slug en minúsculas (a-z, 0-9, guiones): sanitiza el campo, no depende de la whitelist. */
@@ -186,10 +170,6 @@ const DEFAULT_COLOR = "from-primary to-secondary";
 
 const colorAt = (colors: string[], index: number) => colors[index] ?? colors[colors.length - 1] ?? DEFAULT_COLOR;
 
-// ---------------------------------------------------------------------------
-// Tipos runtime — lo que efectivamente consumen los componentes de /roadmap.
-// ---------------------------------------------------------------------------
-
 export interface RoadmapCardItem {
   icon: LucideIcon;
   eyebrow?: string;
@@ -267,10 +247,6 @@ export interface RoadmapContent {
   finalCta: RoadmapFinalCta;
 }
 
-// ---------------------------------------------------------------------------
-// Hidratación: documento validado -> objetos runtime (resuelve íconos + colores).
-// ---------------------------------------------------------------------------
-
 const hydrateCardItems = (items: RoadmapContentCardItem[], colors: string[]): RoadmapCardItem[] =>
   items.map((item, index) => ({
     icon: resolveIcon(item.icon),
@@ -333,10 +309,7 @@ export const hydrateRoadmapContent = (doc: RoadmapContentDocument): RoadmapConte
   },
 });
 
-// ---------------------------------------------------------------------------
-// Fallback local: snapshot embebido en el bundle, siempre disponible sin red.
-// ---------------------------------------------------------------------------
-
+// Fallback local: snapshot en bundle
 const parsedFallback = parseRoadmapContent(rawFallbackContent);
 
 if (!parsedFallback) {

@@ -1,19 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { fallbackRoadmapContent, hydrateRoadmapContent, parseRoadmapContent, type RoadmapContent } from "@/data/roadmap";
 
-/**
- * Contenido del Roadmap "actualizable sin redeploy".
- *
- * El mismo roadmap-content.json vive en dos lugares:
- * - horneado en el bundle (fallbackRoadmapContent), garantiza que la página
- *   siempre tenga contenido, sin red.
- * - servido desde GitHub Raw en la rama `main`: si ese archivo cambia, la
- *   web puede leer el cambio en runtime sin un nuevo build.
- *
- * Mientras `feat/sm-roadmap-web` no esté mergeada a `main`, esta URL puede
- * responder 404 — es esperado (ver docs/roadmap-contenido.md), no un bug:
- * el hook cae al fallback local automáticamente en ese caso.
- */
+// Contenido del Roadmap desde GitHub Raw (main) + fallback local.
+// Si falla remoto, usa snapshot del bundle. 404 es esperado pre-merge.
 const REMOTE_CONTENT_URL =
   "https://raw.githubusercontent.com/smartcreditdev-ai/smartcredit_web/main/src/data/roadmap-content.json";
 
@@ -52,22 +41,8 @@ const fetchRoadmapContent = async (): Promise<RoadmapContent> => {
   }
 };
 
-/**
- * Devuelve el contenido del Roadmap. Pinta con el fallback local desde el
- * primer render (`placeholderData`) y dispara el fetch remoto de inmediato
- * en background para reemplazarlo si está disponible y es válido.
- *
- * `placeholderData` (a diferencia de `initialData`) no se persiste en la
- * caché de la query ni cuenta como dato "fresco": la query sigue en estado
- * pending hasta que `queryFn` resuelve, así que `staleTime` no puede impedir
- * ese primer fetch.
- *
- * Con `placeholderData`, TypeScript tipa `query.data` como `RoadmapContent |
- * undefined` (no hay overload de useQuery que lo garantice no-undefined,
- * a diferencia de `initialData`). El `?? fallbackRoadmapContent` de abajo
- * hace ese contrato explícito en el tipo de retorno del hook, sin depender
- * de `strict: false` del tsconfig ni de que Vite no type-chequee el build.
- */
+// placeholderData pinta fallback inmediatamente, fetch remoto en background.
+// Si remoto falla/timeout/invalid, mantiene fallback. data nunca undefined.
 export const useRoadmapContent = () => {
   const query = useQuery<RoadmapContent>({
     queryKey: ["roadmap-content"],
