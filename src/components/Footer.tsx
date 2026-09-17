@@ -1,7 +1,27 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useSectionNavigation } from "@/hooks/use-section-navigation";
 import logo from "@/assets/logo.png";
 
 const Footer = () => {
+  const { goToSection, goToRoadmap } = useSectionNavigation();
+
+  const handleSectionLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    const isModifiedClick = event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+    if (isModifiedClick) return;
+
+    event.preventDefault();
+    goToSection(id);
+  };
+
+  const handleRoadmapClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const isModifiedClick = event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+    if (isModifiedClick) return;
+
+    event.preventDefault();
+    goToRoadmap();
+  };
+
   return (
     <footer className="bg-card border-t border-border py-12">
       <div className="container mx-auto px-4">
@@ -21,27 +41,52 @@ const Footer = () => {
             <h4 className="font-bold text-foreground mb-4">Enlaces Rápidos</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#caracteristicas" className="text-muted-foreground hover:text-primary transition-smooth">
+                <a
+                  href="/#caracteristicas"
+                  onClick={(e) => handleSectionLinkClick(e, "caracteristicas")}
+                  className="text-muted-foreground hover:text-primary transition-smooth"
+                >
                   Características
                 </a>
               </li>
               <li>
-                <a href="#rutas-inteligentes" className="text-muted-foreground hover:text-primary transition-smooth">
+                <a
+                  href="/#rutas-inteligentes"
+                  onClick={(e) => handleSectionLinkClick(e, "rutas-inteligentes")}
+                  className="text-muted-foreground hover:text-primary transition-smooth"
+                >
                   Rutas inteligentes
                 </a>
               </li>
               <li>
-                <a href="#tecnologia" className="text-muted-foreground hover:text-primary transition-smooth">
+                <a
+                  href="/#tecnologia"
+                  onClick={(e) => handleSectionLinkClick(e, "tecnologia")}
+                  className="text-muted-foreground hover:text-primary transition-smooth"
+                >
                   Tecnología
                 </a>
               </li>
               <li>
-                <a href="#beneficios" className="text-muted-foreground hover:text-primary transition-smooth">
+                <a
+                  href="/#beneficios"
+                  onClick={(e) => handleSectionLinkClick(e, "beneficios")}
+                  className="text-muted-foreground hover:text-primary transition-smooth"
+                >
                   Beneficios
                 </a>
               </li>
               <li>
-                <a href="#contacto" className="text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="/roadmap" onClick={handleRoadmapClick} className="text-muted-foreground hover:text-primary transition-smooth">
+                  SM Roadmap
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="/#contacto"
+                  onClick={(e) => handleSectionLinkClick(e, "contacto")}
+                  className="text-muted-foreground hover:text-primary transition-smooth"
+                >
                   Contacto
                 </a>
               </li>
