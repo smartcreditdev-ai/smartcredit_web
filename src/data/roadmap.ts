@@ -18,28 +18,192 @@ import {
   Eye,
   Trophy,
   KeyRound,
+  Circle,
 } from "lucide-react";
+import { z } from "zod";
+import rawFallbackContent from "./roadmap-content.json";
 
 /**
- * Contenido estructurado del Roadmap de Producto.
+ * Capa de datos del Roadmap.
  *
- * Fuente funcional: Roadmap_SmartCredit_v3.
- * Este archivo es contenido estático (sin fetch/CMS) para el Bloque 1.
- * El bloque siguiente conectará una fuente actualizable sin redeploy
- * respetando esta misma forma de datos.
+ * FUENTE TEXTUAL DE VERDAD: src/data/roadmap-content.json
+ * Este archivo NO duplica el contenido: sólo define tipos, el schema Zod,
+ * el resolver de íconos (whitelist) y la hidratación de JSON validado hacia
+ * los objetos que consumen Roadmap.tsx / RoadmapStageSection / ContinuousEvolution.
+ *
+ * Colores y gradientes de cada ítem viven acá, en código, NUNCA en el JSON
+ * (ver STAGE1_COLORS etc. más abajo) — así el contenido remoto nunca puede
+ * alterar el diseño visual, sólo el texto.
  */
+
+// ---------------------------------------------------------------------------
+// Whitelist de íconos: el JSON sólo puede referenciar íconos por clave string.
+// Nunca se importa/ejecuta código a partir de texto remoto.
+// ---------------------------------------------------------------------------
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  users: Users,
+  "file-text": FileText,
+  "shield-check": ShieldCheck,
+  wallet: Wallet,
+  brain: Brain,
+  sparkles: Sparkles,
+  workflow: Workflow,
+  "trending-up": TrendingUp,
+  smartphone: Smartphone,
+  "building-2": Building2,
+  lightbulb: Lightbulb,
+  search: Search,
+  vote: Vote,
+  rocket: Rocket,
+  clock: Clock,
+  eye: Eye,
+  trophy: Trophy,
+  "key-round": KeyRound,
+};
+
+/** Ícono seguro para claves desconocidas (contenido remoto con un icon key nuevo/typo). */
+const FALLBACK_ICON: LucideIcon = Circle;
+
+const resolveIcon = (key: string): LucideIcon => ICON_MAP[key] ?? FALLBACK_ICON;
+
+// ---------------------------------------------------------------------------
+// Schema Zod — el contenido remoto sólo se usa si pasa esta validación.
+// Todo se renderiza como texto React normal: nunca HTML, nunca dangerouslySetInnerHTML.
+// ---------------------------------------------------------------------------
+
+const textField = (max: number) => z.string().trim().min(1).max(max);
+
+/** Slug en minúsculas (a-z, 0-9, guiones): sanitiza el campo, no depende de la whitelist. */
+const iconKeyField = z
+  .string()
+  .trim()
+  .min(1)
+  .max(40)
+  .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'icon debe ser un slug en minúsculas, ej. "file-text"');
+
+const cardItemSchema = z.object({
+  icon: iconKeyField,
+  eyebrow: textField(60).optional(),
+  title: textField(150),
+  text: textField(400).optional(),
+  items: z.array(textField(200)).min(1).optional(),
+});
+
+const roadmapContentSchema = z.object({
+  hero: z.object({
+    badge: textField(80),
+    title: textField(200),
+    description: textField(500),
+    ctaLabel: textField(80),
+  }),
+  stage1: z.object({
+    title: textField(150),
+    status: textField(100),
+    description: textField(300),
+    categories: z.array(cardItemSchema).min(1),
+    notes: z.array(textField(400)),
+  }),
+  stage2: z.object({
+    title: textField(150),
+    status: textField(100),
+    description: textField(400),
+    items: z.array(cardItemSchema).min(1),
+  }),
+  horizons: z.object({
+    badge: textField(80),
+    title: textField(150),
+    intro: textField(500),
+    items: z.array(cardItemSchema).min(1),
+  }),
+  continuousEvolution: z.object({
+    title: textField(150),
+    intro: textField(500),
+    steps: z
+      .array(
+        z.object({
+          number: textField(4),
+          icon: iconKeyField,
+          title: textField(100),
+          description: textField(300),
+        }),
+      )
+      .min(1),
+  }),
+  commitments: z.object({
+    title: textField(150),
+    items: z.array(cardItemSchema).min(1),
+  }),
+  finalCta: z.object({
+    title: textField(150),
+    description: textField(300),
+    buttons: z.object({
+      primary: textField(60),
+      secondary: textField(60),
+      tertiary: textField(60),
+    }),
+  }),
+});
+
+export type RoadmapContentDocument = z.infer<typeof roadmapContentSchema>;
+type RoadmapContentCardItem = z.infer<typeof cardItemSchema>;
+
+/** Valida un payload arbitrario (típicamente `await response.json()`). null si no cumple el schema. */
+export const parseRoadmapContent = (data: unknown): RoadmapContentDocument | null => {
+  const result = roadmapContentSchema.safeParse(data);
+  return result.success ? result.data : null;
+};
+
+// URL controlada por código: el contenido remoto/local nunca puede definir destinos propios.
+export const SUGGESTION_LINK = "https://respond.canny.io/feature-request";
+
+// ---------------------------------------------------------------------------
+// Colores/gradientes por posición — viven en código, nunca en el JSON.
+// ---------------------------------------------------------------------------
+
+const STAGE1_COLORS = [
+  "from-emerald-500 to-green-500",
+  "from-green-500 to-teal-500",
+  "from-teal-500 to-emerald-600",
+  "from-emerald-600 to-green-600",
+  "from-green-600 to-teal-600",
+];
+const STAGE2_COLORS = ["from-amber-500 to-orange-500"];
+const HORIZON_COLORS = [
+  "from-purple-500 to-pink-500",
+  "from-indigo-500 to-purple-500",
+  "from-cyan-500 to-blue-500",
+  "from-orange-500 to-red-500",
+];
+const COMMITMENT_COLORS = [
+  "from-blue-500 to-cyan-500",
+  "from-cyan-500 to-teal-500",
+  "from-teal-500 to-emerald-500",
+  "from-emerald-500 to-green-500",
+];
+/** Fallback defensivo si algún día el contenido trae más ítems que colores definidos. */
+const DEFAULT_COLOR = "from-primary to-secondary";
+
+const colorAt = (colors: string[], index: number) => colors[index] ?? colors[colors.length - 1] ?? DEFAULT_COLOR;
+
+// ---------------------------------------------------------------------------
+// Tipos runtime — lo que efectivamente consumen los componentes de /roadmap.
+// ---------------------------------------------------------------------------
 
 export interface RoadmapCardItem {
   icon: LucideIcon;
-  /** Etiqueta corta sobre el título, ej. "Etapa 3" */
   eyebrow?: string;
   title: string;
-  /** Párrafo único (usado por ej. en Compromisos) */
   text?: string;
-  /** Lista de funcionalidades (usado en Etapa 1 y Horizontes) */
   items?: string[];
-  /** Clases de gradiente Tailwind para el ícono, ej. "from-emerald-500 to-green-500" */
   color: string;
+}
+
+export interface RoadmapHero {
+  badge: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
 }
 
 export interface RoadmapStage1 {
@@ -58,6 +222,7 @@ export interface RoadmapStage2 {
 }
 
 export interface RoadmapHorizonsSection {
+  badge: string;
   title: string;
   intro: string;
   items: RoadmapCardItem[];
@@ -82,225 +247,91 @@ export interface CommitmentsSection {
   items: RoadmapCardItem[];
 }
 
-export const stage1: RoadmapStage1 = {
-  title: "Digitalización del Ciclo Crediticio",
-  status: "Disponible hoy en producción",
-  description: "Utilizado por instituciones activas en Centroamérica.",
-  categories: [
-    {
-      icon: Users,
-      title: "Gestión Comercial",
-      color: "from-emerald-500 to-green-500",
-      items: [
-        "Prospectos y gestión comercial",
-        "Agenda y seguimiento comercial",
-        "Conversión de prospecto a solicitud",
-        "Geolocalización y gestión de campo",
-      ],
-    },
-    {
-      icon: FileText,
-      title: "Originación del Crédito",
-      color: "from-green-500 to-teal-500",
-      items: [
-        "Solicitud de crédito digital",
-        "Expediente electrónico",
-        "Gestión documental",
-        "Garantías y fiadores",
-        "Información económica y financiera",
-        "Documentación fotográfica",
-        "App móvil — online y offline",
-        "OCR: lectura inteligente de documentos",
-        "Firma y captura en campo",
-      ],
-    },
-    {
-      icon: ShieldCheck,
-      title: "Evaluación Crediticia",
-      color: "from-teal-500 to-emerald-600",
-      items: [
-        "Bandejas de análisis",
-        "Flujo de aprobación configurable",
-        "Comité de crédito",
-        "Motor de scoring configurable",
-        "Reglas de negocio por institución",
-        "Gestión de excepciones",
-        "Preaprobación automática",
-        "Control inteligente del expediente",
-        "Resumen automático con IA",
-      ],
-    },
-    {
-      icon: Wallet,
-      title: "Gestión de Cartera",
-      color: "from-emerald-600 to-green-600",
-      items: [
-        "Desembolso",
-        "Gestión de cartera activa",
-        "Cobranza preventiva",
-        "Promesas de pago",
-        "Renovaciones",
-        "Deserciones",
-        "Rutero inteligente con IA",
-        "KPI de cobranza en tiempo real",
-        "Metas por promotor",
-      ],
-    },
-    {
-      icon: Brain,
-      title: "Inteligencia y Plataforma",
-      color: "from-green-600 to-teal-600",
-      items: [
-        "Dashboard con analítica en tiempo real",
-        "Inteligencia Artificial integrada",
-        "Integraciones mediante API REST",
-        "Documentación interactiva de API",
-        "Administración multi-tenant",
-        "Facturación automática por roles",
-        "Registro de actividad y logs globales",
-        "Simulador de préstamos configurable",
-        "Fórmulas de cálculo personalizables",
-        "Formularios dinámicos por institución",
-        "Notificaciones por correo",
-        "Chatbot institucional (add-on)",
-      ],
-    },
-  ],
-  notes: [
-    "Integraciones con bureaus de crédito: disponibles según la oferta de cada país e institución, configuradas como integración de datos.",
-    "Chatbot institucional: disponible como módulo complementario con equipo y precio propios.",
-  ],
-};
+export interface RoadmapFinalCta {
+  title: string;
+  description: string;
+  buttons: {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+  };
+}
 
-export const stage2: RoadmapStage2 = {
-  title: "Automatización Inteligente",
-  status: "En desarrollo activo · 2026",
-  description:
-    "Reducir tiempos operativos mediante la automatización de validaciones, controles y procesos del ciclo crediticio.",
-  items: [
-    { icon: Sparkles, title: "Validaciones inteligentes antes de crear la solicitud", color: "from-amber-500 to-orange-500" },
-    { icon: ShieldCheck, title: "Validación automática de políticas de crédito", color: "from-amber-500 to-orange-500" },
-    { icon: FileText, title: "Control inteligente del expediente y documentos", color: "from-amber-500 to-orange-500" },
-    { icon: Smartphone, title: "Integración con WhatsApp para notificaciones", color: "from-amber-500 to-orange-500" },
-    { icon: Sparkles, title: "Alertas y notificaciones automáticas", color: "from-amber-500 to-orange-500" },
-    { icon: Workflow, title: "Integración con nuevas fuentes de información", color: "from-amber-500 to-orange-500" },
-    { icon: Users, title: "Crédito Grupal", color: "from-amber-500 to-orange-500" },
-  ],
-};
+export interface RoadmapContent {
+  hero: RoadmapHero;
+  stage1: RoadmapStage1;
+  stage2: RoadmapStage2;
+  horizons: RoadmapHorizonsSection;
+  continuousEvolution: ContinuousEvolutionContent;
+  commitments: CommitmentsSection;
+  finalCta: RoadmapFinalCta;
+}
 
-export const horizonsSection: RoadmapHorizonsSection = {
-  title: "Horizontes de Evolución",
-  intro:
-    "Los siguientes horizontes definen la dirección estratégica de SmartCredit. Las funcionalidades específicas se definen de forma continua a través del proceso de sugerencias de las instituciones.",
-  items: [
-    {
-      icon: Workflow,
-      eyebrow: "Etapa 3",
-      title: "Inteligencia Operativa",
-      color: "from-purple-500 to-pink-500",
-      items: [
-        "Recomendaciones automáticas para asesores y analistas",
-        "Análisis de riesgo avanzado",
-        "Indicadores de impacto social",
-      ],
-    },
-    {
-      icon: TrendingUp,
-      eyebrow: "Etapa 4",
-      title: "Analítica Predictiva",
-      color: "from-indigo-500 to-purple-500",
-      items: [
-        "Predicción de mora, renovación y deserción",
-        "Segmentación avanzada",
-        "Análisis geográfico de cartera",
-      ],
-    },
-    {
-      icon: Smartphone,
-      eyebrow: "Etapa 5",
-      title: "Experiencia Digital",
-      color: "from-cyan-500 to-blue-500",
-      items: [
-        "Portal de autoservicio",
-        "Solicitudes y renovaciones digitales",
-        "Atención mediante asistentes virtuales",
-      ],
-    },
-    {
-      icon: Building2,
-      eyebrow: "Etapa 6",
-      title: "Inteligencia Institucional",
-      color: "from-orange-500 to-red-500",
-      items: [
-        "Análisis de rentabilidad",
-        "Simulación de políticas",
-        "Benchmarking sectorial",
-        "Indicadores estratégicos",
-      ],
-    },
-  ],
-};
+// ---------------------------------------------------------------------------
+// Hidratación: documento validado -> objetos runtime (resuelve íconos + colores).
+// ---------------------------------------------------------------------------
 
-export const continuousEvolution: ContinuousEvolutionContent = {
-  title: "Evolución Continua — Programa de Mejoras con Instituciones",
-  intro:
-    "SmartCredit evoluciona junto con las instituciones que la usan. Cada trimestre evaluamos las sugerencias de nuestras instituciones activas y definimos qué nuevas funcionalidades y mejoras ingresan al plan de desarrollo.",
-  steps: [
-    {
-      number: "01",
-      title: "Sugerencia",
-      description: "La institución registra una mejora o funcionalidad desde el portal de SmartCredit.",
-      icon: Lightbulb,
-    },
-    {
-      number: "02",
-      title: "Evaluación",
-      description: "El equipo analiza impacto, viabilidad técnica y alineación estratégica en máximo 30 días.",
-      icon: Search,
-    },
-    {
-      number: "03",
-      title: "Votación",
-      description: "Las sugerencias aprobadas se publican para que las instituciones puedan votar y priorizar.",
-      icon: Vote,
-    },
-    {
-      number: "04",
-      title: "Ejecución",
-      description:
-        "Las más votadas entran al sprint. Se comunica el avance a quien la propuso y a la comunidad.",
-      icon: Rocket,
-    },
-  ],
-  suggestionLink: "https://respond.canny.io/feature-request",
-};
+const hydrateCardItems = (items: RoadmapContentCardItem[], colors: string[]): RoadmapCardItem[] =>
+  items.map((item, index) => ({
+    icon: resolveIcon(item.icon),
+    eyebrow: item.eyebrow,
+    title: item.title,
+    text: item.text,
+    items: item.items,
+    color: colorAt(colors, index),
+  }));
 
-export const commitmentsSection: CommitmentsSection = {
-  title: "Nuestros compromisos con las instituciones participantes",
-  items: [
-    {
-      icon: Clock,
-      title: "Ciclo trimestral",
-      text: "Toda sugerencia recibe respuesta en máximo 90 días.",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      icon: Eye,
-      title: "Transparencia",
-      text: "Las sugerencias aprobadas son visibles para todas las instituciones.",
-      color: "from-cyan-500 to-teal-500",
-    },
-    {
-      icon: Trophy,
-      title: "Reconocimiento",
-      text: "Quienes proponen mejoras implementadas son reconocidos como co-creadores.",
-      color: "from-teal-500 to-emerald-500",
-    },
-    {
-      icon: KeyRound,
-      title: "Prioridad de acceso",
-      text: "Las instituciones participantes acceden primero a nuevas funcionalidades.",
-      color: "from-emerald-500 to-green-500",
-    },
-  ],
-};
+export const hydrateRoadmapContent = (doc: RoadmapContentDocument): RoadmapContent => ({
+  hero: { ...doc.hero },
+  stage1: {
+    title: doc.stage1.title,
+    status: doc.stage1.status,
+    description: doc.stage1.description,
+    categories: hydrateCardItems(doc.stage1.categories, STAGE1_COLORS),
+    notes: doc.stage1.notes,
+  },
+  stage2: {
+    title: doc.stage2.title,
+    status: doc.stage2.status,
+    description: doc.stage2.description,
+    items: hydrateCardItems(doc.stage2.items, STAGE2_COLORS),
+  },
+  horizons: {
+    badge: doc.horizons.badge,
+    title: doc.horizons.title,
+    intro: doc.horizons.intro,
+    items: hydrateCardItems(doc.horizons.items, HORIZON_COLORS),
+  },
+  continuousEvolution: {
+    title: doc.continuousEvolution.title,
+    intro: doc.continuousEvolution.intro,
+    steps: doc.continuousEvolution.steps.map((step) => ({
+      number: step.number,
+      title: step.title,
+      description: step.description,
+      icon: resolveIcon(step.icon),
+    })),
+    suggestionLink: SUGGESTION_LINK,
+  },
+  commitments: {
+    title: doc.commitments.title,
+    items: hydrateCardItems(doc.commitments.items, COMMITMENT_COLORS),
+  },
+  finalCta: { ...doc.finalCta },
+});
+
+// ---------------------------------------------------------------------------
+// Fallback local: snapshot embebido en el bundle, siempre disponible sin red.
+// ---------------------------------------------------------------------------
+
+const parsedFallback = parseRoadmapContent(rawFallbackContent);
+
+if (!parsedFallback) {
+  // Sólo puede pasar si roadmap-content.json se edita con un shape roto.
+  // Falla rápido (build/arranque) en vez de silenciosamente en producción.
+  throw new Error(
+    "src/data/roadmap-content.json no cumple el schema de RoadmapContent. Revisar su estructura.",
+  );
+}
+
+export const fallbackRoadmapContent: RoadmapContent = hydrateRoadmapContent(parsedFallback);

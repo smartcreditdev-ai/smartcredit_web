@@ -2,16 +2,23 @@ import { Fragment, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { continuousEvolution } from "@/data/roadmap";
+import type { ContinuousEvolutionContent } from "@/data/roadmap";
+
+interface ContinuousEvolutionProps {
+  content: ContinuousEvolutionContent;
+}
 
 /**
  * Flujo 01 -> 02 -> 03 -> 04 del programa de mejoras continuas.
  * Horizontal en desktop, apilado en mobile (sin conector, para mantenerlo simple).
+ *
+ * Recibe el contenido por props: el único consumo de useRoadmapContent()
+ * vive en Roadmap.tsx.
  */
-const ContinuousEvolution = () => {
+const ContinuousEvolution = ({ content }: ContinuousEvolutionProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-  const { title, intro, steps, suggestionLink } = continuousEvolution;
+  const { title, intro, steps, suggestionLink } = content;
 
   return (
     <section
