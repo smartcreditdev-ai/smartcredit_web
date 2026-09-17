@@ -32,7 +32,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden xl:flex items-center gap-8">
             <button onClick={() => handleSectionClick("inicio")} className="text-foreground hover:text-primary transition-smooth">
               Inicio
             </button>
@@ -57,7 +57,7 @@ const Header = () => {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden xl:flex items-center gap-3">
             <Button variant="cta" size="lg" onClick={() => handleSectionClick("contacto")}>
               Solicitar Demo
             </Button>
@@ -67,14 +67,14 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button className="xl:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <Menu className="w-6 h-6" />
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 flex flex-col gap-4">
+          <div className="xl:hidden mt-4 pb-4 flex flex-col gap-4">
             <button onClick={() => handleSectionClick("inicio")} className="text-foreground hover:text-primary transition-smooth text-left">
               Inicio
             </button>
