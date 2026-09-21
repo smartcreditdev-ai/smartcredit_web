@@ -49,7 +49,7 @@ const Header = () => {
               Beneficios
             </button>
             <Link to="/roadmap" onClick={handleRoadmapClick} className="text-foreground hover:text-primary transition-smooth">
-              SM Roadmap
+              Roadmap
             </Link>
             <button onClick={() => handleSectionClick("contacto")} className="text-foreground hover:text-primary transition-smooth">
               Contacto
@@ -98,7 +98,7 @@ const Header = () => {
               }}
               className="text-foreground hover:text-primary transition-smooth text-left"
             >
-              SM Roadmap
+              Roadmap
             </Link>
             <button onClick={() => handleSectionClick("contacto")} className="text-foreground hover:text-primary transition-smooth text-left">
               Contacto

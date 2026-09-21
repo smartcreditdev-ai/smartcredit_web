@@ -78,7 +78,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/roadmap" onClick={handleRoadmapClick} className="text-muted-foreground hover:text-primary transition-smooth">
-                  SM Roadmap
+                  Roadmap
                 </Link>
               </li>
               <li>

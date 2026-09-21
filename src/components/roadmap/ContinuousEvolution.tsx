@@ -70,12 +70,7 @@ const ContinuousEvolution = ({ content }: ContinuousEvolutionProps) => {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <Button variant="outline" asChild>
-            <a href={suggestionLink} target="_blank" rel="noopener noreferrer">
-              Proponer una mejora
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </Button>
+        
         </motion.div>
       </div>
     </section>

@@ -19,11 +19,11 @@ const Roadmap = () => {
   const { data: content } = useRoadmapContent();
 
   useSeo({
-    title: "SM Roadmap | SmartCredit",
+    title: "Roadmap | SmartCredit",
     description:
       "Conoce el roadmap de SmartCredit: funcionalidades disponibles en producción, desarrollo activo 2026 y horizontes de evolución 2027–2030.",
     canonical: "https://www.smartcreditla.com/roadmap",
-    ogTitle: "SM Roadmap | SmartCredit",
+    ogTitle: "Roadmap | SmartCredit",
     ogDescription:
       "Descubre qué funcionalidades de SmartCredit están disponibles, qué está en desarrollo y cuáles son los próximos horizontes de evolución.",
     ogUrl: "https://www.smartcreditla.com/roadmap",
