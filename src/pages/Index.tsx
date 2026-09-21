@@ -12,7 +12,7 @@ import AISection from "@/components/AISection";
 import SmartRoutesSection from "@/components/SmartRoutesSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import heroImage from "@/assets/hero-back.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
@@ -22,6 +22,15 @@ const Index = () => {
     entidad: "",
     mensaje: "",
   });
+
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    requestAnimationFrame(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+    });
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

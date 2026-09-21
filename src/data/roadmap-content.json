@@ -1,0 +1,202 @@
+{
+  "hero": {
+    "badge": "SM Roadmap · 2026–2030",
+    "title": "Construimos el futuro del crédito, etapa por etapa",
+    "description": "Este roadmap muestra las capacidades ya disponibles en producción, en qué estamos trabajando activamente y los horizontes que guían la evolución de SmartCredit junto a las instituciones que lo usan.",
+    "ctaLabel": "Explora el roadmap"
+  },
+  "stage1": {
+    "title": "Digitalización del Ciclo Crediticio",
+    "status": "Etapa 1 · Disponible en producción",
+    "description": "Utilizado por instituciones activas en Centroamérica.",
+    "categories": [
+      {
+        "icon": "users",
+        "title": "Gestión Comercial",
+        "items": [
+          "Prospectos y gestión comercial",
+          "Agenda y seguimiento comercial",
+          "Conversión de prospecto a solicitud",
+          "Geolocalización y gestión de campo"
+        ]
+      },
+      {
+        "icon": "file-text",
+        "title": "Originación del Crédito",
+        "items": [
+          "Solicitud de crédito digital",
+          "Expediente electrónico",
+          "Gestión documental",
+          "Garantías y fiadores",
+          "Información económica y financiera",
+          "Documentación fotográfica",
+          "App móvil — online y offline",
+          "OCR: lectura inteligente de documentos",
+          "Firma y captura en campo"
+        ]
+      },
+      {
+        "icon": "shield-check",
+        "title": "Evaluación Crediticia",
+        "items": [
+          "Bandejas de análisis",
+          "Flujo de aprobación configurable",
+          "Comité de crédito",
+          "Motor de scoring configurable",
+          "Reglas de negocio por institución",
+          "Gestión de excepciones",
+          "Preaprobación automática",
+          "Control inteligente del expediente",
+          "Resumen automático con IA"
+        ]
+      },
+      {
+        "icon": "wallet",
+        "title": "Gestión de Cartera",
+        "items": [
+          "Desembolso",
+          "Gestión de cartera activa",
+          "Cobranza preventiva",
+          "Promesas de pago",
+          "Renovaciones",
+          "Deserciones",
+          "Rutero inteligente con IA",
+          "KPI de cobranza en tiempo real",
+          "Metas por promotor"
+        ]
+      },
+      {
+        "icon": "brain",
+        "title": "Inteligencia y Plataforma",
+        "items": [
+          "Dashboard con analítica en tiempo real",
+          "Inteligencia Artificial integrada",
+          "Integraciones mediante API REST",
+          "Documentación interactiva de API",
+          "Administración multi-tenant",
+          "Facturación automática por roles",
+          "Registro de actividad y logs globales",
+          "Simulador de préstamos configurable",
+          "Fórmulas de cálculo personalizables",
+          "Formularios dinámicos por institución",
+          "Notificaciones por correo",
+          "Chatbot institucional (add-on)"
+        ]
+      }
+    ],
+    "notes": [
+      "Integraciones con bureaus de crédito: disponibles según la oferta de cada país e institución, configuradas como integración de datos.",
+      "Chatbot institucional: disponible como módulo complementario con equipo y precio propios."
+    ]
+  },
+  "stage2": {
+    "title": "Automatización Inteligente",
+    "status": "Etapa 2 · En desarrollo activo · 2026",
+    "description": "Reducir tiempos operativos mediante la automatización de validaciones, controles y procesos del ciclo crediticio.",
+    "items": [
+      { "icon": "sparkles", "title": "Validaciones inteligentes antes de crear la solicitud" },
+      { "icon": "shield-check", "title": "Validación automática de políticas de crédito" },
+      { "icon": "file-text", "title": "Control inteligente del expediente y documentos" },
+      { "icon": "smartphone", "title": "Integración con WhatsApp para notificaciones" },
+      { "icon": "sparkles", "title": "Alertas y notificaciones automáticas" },
+      { "icon": "workflow", "title": "Integración con nuevas fuentes de información" },
+      { "icon": "users", "title": "Crédito Grupal" }
+    ]
+  },
+  "horizons": {
+    "badge": "Etapas 3–6 · 2027–2030",
+    "title": "Horizontes de Evolución",
+    "intro": "Los siguientes horizontes definen la dirección estratégica de SmartCredit. Las funcionalidades específicas se definen de forma continua a través del proceso de sugerencias de las instituciones.",
+    "items": [
+      {
+        "icon": "workflow",
+        "eyebrow": "Etapa 3",
+        "title": "Inteligencia Operativa",
+        "items": [
+          "Recomendaciones automáticas para asesores y analistas",
+          "Análisis de riesgo avanzado",
+          "Indicadores de impacto social"
+        ]
+      },
+      {
+        "icon": "trending-up",
+        "eyebrow": "Etapa 4",
+        "title": "Analítica Predictiva",
+        "items": [
+          "Predicción de mora, renovación y deserción",
+          "Segmentación avanzada",
+          "Análisis geográfico de cartera"
+        ]
+      },
+      {
+        "icon": "smartphone",
+        "eyebrow": "Etapa 5",
+        "title": "Experiencia Digital",
+        "items": [
+          "Portal de autoservicio",
+          "Solicitudes y renovaciones digitales",
+          "Atención mediante asistentes virtuales"
+        ]
+      },
+      {
+        "icon": "building-2",
+        "eyebrow": "Etapa 6",
+        "title": "Inteligencia Institucional",
+        "items": [
+          "Análisis de rentabilidad",
+          "Simulación de políticas",
+          "Benchmarking sectorial",
+          "Indicadores estratégicos"
+        ]
+      }
+    ]
+  },
+  "continuousEvolution": {
+    "title": "Evolución Continua — Programa de Mejoras con Instituciones",
+    "intro": "SmartCredit evoluciona junto con las instituciones que la usan. Cada trimestre evaluamos las sugerencias de nuestras instituciones activas y definimos qué nuevas funcionalidades y mejoras ingresan al plan de desarrollo.",
+    "steps": [
+      {
+        "number": "01",
+        "icon": "lightbulb",
+        "title": "Sugerencia",
+        "description": "La institución registra una mejora o funcionalidad desde el portal de SmartCredit."
+      },
+      {
+        "number": "02",
+        "icon": "search",
+        "title": "Evaluación",
+        "description": "El equipo analiza impacto, viabilidad técnica y alineación estratégica en máximo 30 días."
+      },
+      {
+        "number": "03",
+        "icon": "vote",
+        "title": "Votación",
+        "description": "Las sugerencias aprobadas se publican para que las instituciones puedan votar y priorizar."
+      },
+      {
+        "number": "04",
+        "icon": "rocket",
+        "title": "Ejecución",
+        "description": "Las más votadas entran al sprint. Se comunica el avance a quien la propuso y a la comunidad."
+      }
+    ]
+  },
+  "commitments": {
+    "title": "Nuestros compromisos con las instituciones participantes",
+    "items": [
+      { "icon": "clock", "title": "Ciclo trimestral", "text": "Toda sugerencia recibe respuesta en máximo 90 días." },
+      { "icon": "eye", "title": "Transparencia", "text": "Las sugerencias aprobadas son visibles para todas las instituciones." },
+      { "icon": "trophy", "title": "Reconocimiento", "text": "Quienes proponen mejoras implementadas son reconocidos como co-creadores." },
+      { "icon": "key-round", "title": "Prioridad de acceso", "text": "Las instituciones participantes acceden primero a nuevas funcionalidades." }
+    ]
+  },
+  "finalCta": {
+    "title": "¿Listo para impulsar tu institución?",
+    "description": "Conoce SmartCredit en detalle o habla con nuestro equipo sobre tu caso.",
+    "buttons": {
+      "primary": "Impulsa tu negocio",
+      "secondary": "Conoce más sobre SmartCredit",
+      "tertiary": "Habla con nuestro equipo"
+    }
+  }
+}
